@@ -2,27 +2,49 @@
 
 Sitio web del taller artesanal de Carlos Roubineau (Corrientes, Argentina): restauración de muebles, esterillado, enjuncado, tapizados, carpintería y cestería en mimbre.
 
-Sitio estático (HTML + CSS + JS, sin build). Pensado para GitHub Pages en `https://augstr.github.io/Tacuararte/`.
+Hecho con **[Astro](https://astro.build)** y publicado en GitHub Pages: `https://augstr.github.io/Tacuararte/`.
 
 ## Estructura
 
-- `index.html`: página única (servicios, antes/después, catálogo de canastas, cómo trabajamos, contacto).
-- `css/styles.css`: estilos.
-- `js/main.js`: catálogo de canastas (array `CATALOG`), menú mobile, lightbox y animaciones.
-- `img/catalogo/`: fotos recortadas del catálogo PDF (`canasta-01.jpg` … `canasta-11.jpg`).
-- `img/ig/`: fotos de los posts de [@tacuararte](https://www.instagram.com/tacuararte/).
-- `img/restauraciones/`: fotos de antes y después.
+| Ruta | Qué tiene |
+|---|---|
+| `src/pages/index.astro` | La página: servicios, antes/después, catálogo de canastas, cómo trabajamos, contacto |
+| `src/data/site.ts` | **Datos del taller en un solo lugar:** número de WhatsApp, mensajes de los botones, Instagram y el catálogo (`CATALOG`) |
+| `src/assets/img/` | Fotos que Astro optimiza solo (AVIF/WebP en varios tamaños) |
+| `public/css/styles.css` | Estilos |
+| `public/js/main.js` | Menú mobile, lightbox y animaciones de aparición |
+| `public/` | Lo que se publica tal cual: `robots.txt`, `sitemap.xml`, `llms.txt`, favicon y las dos fotos de Open Graph |
+| `.github/workflows/deploy.yml` | Compila y publica en GitHub Pages con cada push a `main` |
+
+## Cómo está hecho
+
+- **Astro 7**, sin componentes de JavaScript del lado del cliente: genera un HTML estático igual al sitio original.
+- **Imágenes optimizadas** con `<Picture>` de `astro:assets`: cada foto sale en AVIF, WebP y JPG, y el navegador
+  baja la más liviana que soporta (por ejemplo, el logo pasa de 71 KB a 28 KB).
+- El catálogo de canastas se arma **al compilar** desde `CATALOG`, así llega listo en el HTML (mejor para SEO).
+- **Fuentes:** DM Serif Display e Instrument Sans (Google Fonts).
+- Lightbox con `<dialog>` nativo, animaciones de aparición con `IntersectionObserver`.
+- **SEO:** Open Graph, datos estructurados `schema.org/LocalBusiness`, `sitemap.xml`, `robots.txt` y `llms.txt`.
+- **Seguridad:** `Content-Security-Policy` en un `<meta>`: solo se ejecutan scripts propios y las fuentes vienen
+  únicamente de Google Fonts. Si se agrega un script o servicio externo, hay que sumarlo a esa política.
 
 ## Cómo agregar cosas
 
-- **Un modelo nuevo de canasta:** guardar la foto como `img/catalogo/canasta-12.jpg` (cuadrada, ~800 px) y sumar una línea al array `CATALOG` en `js/main.js`.
-- **Un antes/después nuevo:** agregar las fotos en `img/restauraciones/` y duplicar el bloque `.ba` en `index.html`.
-- **Cambiar el número de WhatsApp:** buscar `5493794637135` en `index.html` y `js/main.js`.
+- **Un modelo nuevo de canasta:** guardar la foto como `src/assets/img/catalogo/canasta-12.jpg` y sumar una línea a `CATALOG` en `src/data/site.ts`.
+- **Un antes/después nuevo:** agregar las fotos en `src/assets/img/restauraciones/`, importarlas arriba de `index.astro` y duplicar el bloque `.ba`.
+- **Cambiar el número de WhatsApp:** editar `WHATSAPP` y `WHATSAPP_VISIBLE` en `src/data/site.ts`. Se actualiza en todos los botones.
 
-## Ver en local
+## Desarrollo
 
-Abrir `index.html` en el navegador, o servir la carpeta:
+Requiere Node.js 22.23 o más nuevo.
 
 ```bash
-npx serve .
+npm install
+npm run dev      # http://localhost:4321/Tacuararte/
+npm run build    # genera dist/
 ```
+
+## Mejoras posibles
+
+- **Galería de antes/después con slider** (por ejemplo [img-comparison-slider](https://github.com/sneas/img-comparison-slider),
+  un web component sin dependencias) para arrastrar entre la foto vieja y la nueva.

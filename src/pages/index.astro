@@ -1,3 +1,63 @@
+---
+import { Picture, getImage } from 'astro:assets';
+import { CATALOG, INSTAGRAM, MENSAJES, WHATSAPP_VISIBLE, waLink } from '../data/site';
+
+import sillonesJardin from '../assets/img/ig/sillones-jardin.jpg';
+import sillaTapizada from '../assets/img/ig/silla-tapizada.jpg';
+import esterilla from '../assets/img/ig/esterilla.jpg';
+import logo from '../assets/img/ig/logo.jpg';
+import sillaAntes from '../assets/img/restauraciones/silla-antes.jpg';
+import sillaDespues from '../assets/img/restauraciones/silla-despues.jpg';
+import variedad1 from '../assets/img/catalogo/variedad-1.jpg';
+import paneraTejidos from '../assets/img/catalogo/panera-tejidos.jpg';
+
+// Fotos del catálogo: canasta-01.jpg … canasta-NN.jpg
+const fotosCatalogo = import.meta.glob<{ default: ImageMetadata }>(
+  '../assets/img/catalogo/canasta-*.jpg',
+  { eager: true },
+);
+const fotoDe = (n: number) =>
+  fotosCatalogo[`../assets/img/catalogo/canasta-${String(n).padStart(2, '0')}.jpg`].default;
+
+// Versión grande (para el lightbox) de cada canasta
+const catalogo = await Promise.all(
+  CATALOG.map(async (m) => {
+    const foto = fotoDe(m.n);
+    const grande = await getImage({ src: foto, width: 1200, format: 'webp' });
+    return { ...m, foto, grande: grande.src };
+  }),
+);
+const canastaHero = fotoDe(1);
+
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+const url = new URL(base, Astro.site).href;
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'LocalBusiness',
+  name: 'TacuarArte',
+  description:
+    'Taller artesanal: restauración de muebles, esterillado francés, enjuncado, tapizados, carpintería y cestería en mimbre a pedido.',
+  url,
+  image: `${url}img/ig/sillones-jardin.jpg`,
+  logo: `${url}img/ig/logo.jpg`,
+  telephone: '+54 9 3794 63-7135',
+  founder: { '@type': 'Person', name: 'Carlos Roubineau' },
+  address: { '@type': 'PostalAddress', addressLocality: 'Corrientes', addressRegion: 'Corrientes', addressCountry: 'AR' },
+  areaServed: 'Corrientes, Argentina',
+  sameAs: [INSTAGRAM],
+  makesOffer: [
+    { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Restauración de muebles' } },
+    { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Esterillado francés natural y sintético' } },
+    { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Enjuncado en papel kraft' } },
+    { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Tapizados' } },
+    { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Carpintería' } },
+    { '@type': 'Offer', itemOffered: { '@type': 'Product', name: 'Cestería en mimbre artesanal' } },
+  ],
+};
+
+const formatos = ['avif', 'webp'] as const;
+---
 <!DOCTYPE html>
 <html lang="es-AR">
 <head>
@@ -6,15 +66,18 @@
   <title>TacuarArte · Restauración de muebles y cestería en mimbre en Corrientes</title>
   <meta name="description" content="Taller artesanal de Carlos Roubineau en Corrientes: restauración de muebles, esterillado francés, enjuncado, tapizados, carpintería y cestería en mimbre hecha a mano. Trabajos a pedido.">
   <meta name="theme-color" content="#3a2416">
-  <link rel="canonical" href="https://augstr.github.io/Tacuararte/">
-  <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+  <!-- Solo scripts propios; fuentes desde Google Fonts. El JSON-LD no se ejecuta, CSP no lo bloquea. -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <link rel="canonical" href={url}>
+  <link rel="icon" href={`${base}img/favicon.svg`} type="image/svg+xml">
 
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="TacuarArte">
-  <meta property="og:url" content="https://augstr.github.io/Tacuararte/">
+  <meta property="og:url" content={url}>
   <meta property="og:title" content="TacuarArte: muebles restaurados y cestería en mimbre, a mano">
   <meta property="og:description" content="Restauración de muebles, esterillado, enjuncado, tapizados y canastos de mimbre artesanales. Corrientes, Argentina.">
-  <meta property="og:image" content="https://augstr.github.io/Tacuararte/img/ig/sillones-jardin.jpg">
+  <meta property="og:image" content={`${url}img/ig/sillones-jardin.jpg`}>
   <meta property="og:image:alt" content="Dos sillones de caña restaurados en un jardín">
   <meta property="og:locale" content="es_AR">
   <meta name="twitter:card" content="summary_large_image">
@@ -22,32 +85,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css?v=2">
+  <link rel="stylesheet" href={`${base}css/styles.css?v=3`}>
 
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "LocalBusiness",
-    "name": "TacuarArte",
-    "description": "Taller artesanal: restauración de muebles, esterillado francés, enjuncado, tapizados, carpintería y cestería en mimbre a pedido.",
-    "url": "https://augstr.github.io/Tacuararte/",
-    "image": "https://augstr.github.io/Tacuararte/img/ig/sillones-jardin.jpg",
-    "logo": "https://augstr.github.io/Tacuararte/img/ig/logo.jpg",
-    "telephone": "+54 9 3794 63-7135",
-    "founder": { "@type": "Person", "name": "Carlos Roubineau" },
-    "address": { "@type": "PostalAddress", "addressLocality": "Corrientes", "addressRegion": "Corrientes", "addressCountry": "AR" },
-    "areaServed": "Corrientes, Argentina",
-    "sameAs": ["https://www.instagram.com/tacuararte/"],
-    "makesOffer": [
-      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Restauración de muebles" } },
-      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Esterillado francés natural y sintético" } },
-      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Enjuncado en papel kraft" } },
-      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Tapizados" } },
-      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Carpintería" } },
-      { "@type": "Offer", "itemOffered": { "@type": "Product", "name": "Cestería en mimbre artesanal" } }
-    ]
-  }
-  </script>
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(schema)} />
 </head>
 <body>
 
@@ -69,7 +109,7 @@
         <a href="#contacto">Contacto</a>
       </nav>
 
-      <a class="btn btn--wa btn--sm nav__wa" href="https://wa.me/5493794637135?text=Hola%20Carlos%2C%20vi%20la%20web%20de%20TacuarArte%20y%20quiero%20hacer%20una%20consulta." target="_blank" rel="noopener">
+      <a class="btn btn--wa btn--sm nav__wa" href={waLink(MENSAJES.consulta)} target="_blank" rel="noopener">
         <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-wa"/></svg>
         <span>WhatsApp</span>
       </a>
@@ -93,7 +133,7 @@
           uno por uno.
         </p>
         <div class="hero__ctas">
-          <a class="btn btn--wa" href="https://wa.me/5493794637135?text=Hola%20Carlos%2C%20quiero%20pedir%20un%20presupuesto.%20Te%20mando%20fotos%20del%20mueble." target="_blank" rel="noopener">
+          <a class="btn btn--wa" href={waLink(MENSAJES.presupuesto)} target="_blank" rel="noopener">
             <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-wa"/></svg>
             Pedir presupuesto
           </a>
@@ -104,10 +144,10 @@
 
       <div class="hero__media">
         <figure class="hero__main">
-          <img src="img/ig/sillones-jardin.jpg" alt="Dos sillones de caña restaurados, apoyados sobre el pasto" width="630" height="640">
+          <Picture src={sillonesJardin} formats={formatos} alt="Dos sillones de caña restaurados, apoyados sobre el pasto" loading="eager" fetchpriority="high" />
         </figure>
         <figure class="hero__inset">
-          <img src="img/catalogo/canasta-01.jpg" alt="Canasta de mimbre con tapa y manija" width="800" height="829" loading="lazy">
+          <Picture src={canastaHero} formats={formatos} widths={[400, 800]} sizes="(max-width: 700px) 40vw, 260px" alt="Canasta de mimbre con tapa y manija" />
         </figure>
         <span class="hero__stamp" aria-hidden="true">100%<br>hecho a mano</span>
       </div>
@@ -174,36 +214,36 @@
         <div class="ba">
           <figure class="ba__item">
             <span class="ba__tag">Antes</span>
-            <img src="img/restauraciones/silla-antes.jpg" alt="Silla de madera curvada sin asiento, con la esterilla rota" width="212" height="280" loading="lazy">
+            <Picture src={sillaAntes} formats={formatos} alt="Silla de madera curvada sin asiento, con la esterilla rota" />
           </figure>
           <span class="ba__arrow" aria-hidden="true">→</span>
           <figure class="ba__item">
             <span class="ba__tag ba__tag--after">Después</span>
-            <img src="img/restauraciones/silla-despues.jpg" alt="La misma silla restaurada, con asiento nuevo de esterilla de ratán" width="222" height="280" loading="lazy">
+            <Picture src={sillaDespues} formats={formatos} alt="La misma silla restaurada, con asiento nuevo de esterilla de ratán" />
           </figure>
           <div class="ba__text">
             <h3>Silla de madera curvada</h3>
             <p>Llegó sin asiento y con la madera castigada por los años. Se limpió y ajustó la estructura, y se le tejió un asiento nuevo con <strong>esterilla de ratán</strong> (esterillado estilo francés).</p>
-            <a class="link" href="https://wa.me/5493794637135?text=Hola%20Carlos%2C%20tengo%20una%20silla%20para%20restaurar." target="_blank" rel="noopener">¿Tenés una parecida? Consultanos →</a>
+            <a class="link" href={waLink(MENSAJES.silla)} target="_blank" rel="noopener">¿Tenés una parecida? Consultanos →</a>
           </div>
         </div>
 
         <div class="works">
           <figure class="work work--tall">
-            <img src="img/ig/silla-tapizada.jpg" alt="Silla de madera curvada con asiento tapizado en blanco, junto a una mesa con flores" width="512" height="640" loading="lazy">
+            <Picture src={sillaTapizada} formats={formatos} alt="Silla de madera curvada con asiento tapizado en blanco, junto a una mesa con flores" />
             <figcaption>Silla curvada con asiento retapizado</figcaption>
           </figure>
           <figure class="work work--tall">
-            <img src="img/ig/sillones-jardin.jpg" alt="Par de sillones de caña restaurados" width="630" height="640" loading="lazy">
+            <Picture src={sillonesJardin} formats={formatos} alt="Par de sillones de caña restaurados" />
             <figcaption>Par de sillones de caña</figcaption>
           </figure>
           <figure class="work work--tall">
-            <img src="img/ig/esterilla.jpg" alt="Rollo de esterilla tejida para asientos" width="640" height="640" loading="lazy">
+            <Picture src={esterilla} formats={formatos} alt="Rollo de esterilla tejida para asientos" />
             <figcaption>Esterilla para asientos y respaldos</figcaption>
           </figure>
         </div>
 
-        <p class="more">Más trabajos en <a href="https://www.instagram.com/tacuararte/" target="_blank" rel="noopener">@tacuararte</a></p>
+        <p class="more">Más trabajos en <a href={INSTAGRAM} target="_blank" rel="noopener">@tacuararte</a></p>
       </div>
     </section>
 
@@ -219,19 +259,33 @@
       </header>
 
       <ul class="catalog" id="catalog">
-        <!-- populated from js/main.js -->
+        {catalogo.map(({ n, name, desc, foto, grande }) => (
+          <li class="item reveal">
+            <button class="item__pic" type="button" data-full={grande} data-cap={`Modelo ${n} · ${name}`} aria-label={`Ampliar foto del modelo ${n}`}>
+              <Picture src={foto} formats={formatos} widths={[400, 800]} sizes="(max-width: 600px) 50vw, 280px" alt={`Modelo ${n}: ${name.toLowerCase()} de mimbre`} />
+              <span class="item__num">{n}</span>
+            </button>
+            <div class="item__body">
+              <h3>{name}</h3>
+              <p>{desc}</p>
+              <a class="item__ask" href={waLink(`Hola Carlos, me interesa la canasta modelo ${n} (${name}). ¿Me pasás precio y medidas?`)} target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-wa"/></svg>Consultar
+              </a>
+            </div>
+          </li>
+        ))}
       </ul>
 
       <div class="custom">
         <div class="custom__pics">
-          <img src="img/catalogo/variedad-1.jpg" alt="Tres canastas ovaladas de distintos tamaños apiladas" width="800" height="800" loading="lazy">
-          <img src="img/catalogo/panera-tejidos.jpg" alt="Panera de mimbre con tejidos de colores" width="800" height="800" loading="lazy">
+          <Picture src={variedad1} formats={formatos} widths={[400, 800]} sizes="(max-width: 700px) 50vw, 320px" alt="Tres canastas ovaladas de distintos tamaños apiladas" />
+          <Picture src={paneraTejidos} formats={formatos} widths={[400, 800]} sizes="(max-width: 700px) 50vw, 320px" alt="Panera de mimbre con tejidos de colores" />
         </div>
         <div class="custom__text">
           <p class="eyebrow">Trabajos personalizados</p>
           <h3>Variedad en tamaños y formas</h3>
           <p>¿Necesitás una canasta para un lugar puntual, un juego de paneras o un regalo? Contanos qué buscás y lo hacemos a medida.</p>
-          <a class="btn btn--wa" href="https://wa.me/5493794637135?text=Hola%20Carlos%2C%20quiero%20encargar%20una%20canasta%20a%20medida." target="_blank" rel="noopener">
+          <a class="btn btn--wa" href={waLink(MENSAJES.aMedida)} target="_blank" rel="noopener">
             <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-wa"/></svg>
             Encargar a medida
           </a>
@@ -279,17 +333,17 @@
           <h2>¿Tenés un mueble <em>esperando una segunda vida?</em></h2>
           <p>Escribile a Carlos y contale qué necesitás. Atendemos consultas por WhatsApp e Instagram.</p>
           <dl class="contact__list">
-            <div><dt>WhatsApp</dt><dd><a href="https://wa.me/5493794637135" target="_blank" rel="noopener">3794-637135</a></dd></div>
-            <div><dt>Instagram</dt><dd><a href="https://www.instagram.com/tacuararte/" target="_blank" rel="noopener">@tacuararte</a></dd></div>
+            <div><dt>WhatsApp</dt><dd><a href={waLink()} target="_blank" rel="noopener">{WHATSAPP_VISIBLE}</a></dd></div>
+            <div><dt>Instagram</dt><dd><a href={INSTAGRAM} target="_blank" rel="noopener">@tacuararte</a></dd></div>
             <div><dt>Taller</dt><dd>Corrientes, Argentina</dd></div>
           </dl>
-          <a class="btn btn--wa btn--lg" href="https://wa.me/5493794637135?text=Hola%20Carlos%2C%20vi%20la%20web%20de%20TacuarArte%20y%20quiero%20hacer%20una%20consulta." target="_blank" rel="noopener">
+          <a class="btn btn--wa btn--lg" href={waLink(MENSAJES.consulta)} target="_blank" rel="noopener">
             <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-wa"/></svg>
             Escribir por WhatsApp
           </a>
         </div>
         <figure class="contact__logo">
-          <img src="img/ig/logo.jpg" alt="Logo de TacuarArte con las iniciales C y R sobre mimbre, arpillera y madera" width="640" height="640" loading="lazy">
+          <Picture src={logo} formats={formatos} alt="Logo de TacuarArte con las iniciales C y R sobre mimbre, arpillera y madera" />
           <figcaption>Carlos Roubineau · Artesano</figcaption>
         </figure>
       </div>
@@ -300,13 +354,13 @@
   <footer class="footer">
     <div class="wrap footer__inner">
       <span class="brand brand--small"><span class="brand__mark">C<i></i>R</span><span class="brand__name">TacuarArte</span></span>
-      <span>© <span id="year">2026</span> TacuarArte · Carlos Roubineau · Corrientes</span>
+      <span>© <span id="year">{new Date().getFullYear()}</span> TacuarArte · Carlos Roubineau · Corrientes</span>
       <a href="#top">Volver arriba ↑</a>
     </div>
   </footer>
 
   <!-- Floating WhatsApp -->
-  <a class="fab" href="https://wa.me/5493794637135?text=Hola%20Carlos%2C%20vi%20la%20web%20de%20TacuarArte%20y%20quiero%20hacer%20una%20consulta." target="_blank" rel="noopener" aria-label="Escribir por WhatsApp">
+  <a class="fab" href={waLink(MENSAJES.consulta)} target="_blank" rel="noopener" aria-label="Escribir por WhatsApp">
     <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-wa"/></svg>
   </a>
 
@@ -321,6 +375,6 @@
     <symbol id="i-wa" viewBox="0 0 24 24"><path fill="currentColor" d="M12.04 2a9.9 9.9 0 0 0-8.5 15l-1.4 5.1 5.24-1.37A9.9 9.9 0 1 0 12.04 2zm0 18.1a8.2 8.2 0 0 1-4.18-1.15l-.3-.18-3.1.82.83-3.03-.2-.31a8.2 8.2 0 1 1 6.95 3.85zm4.5-6.14c-.25-.12-1.46-.72-1.69-.8-.23-.08-.39-.12-.55.12-.17.25-.64.8-.78.96-.14.17-.29.19-.54.06-.25-.12-1.04-.38-1.98-1.22-.73-.65-1.23-1.46-1.37-1.7-.14-.25-.02-.38.11-.5.11-.11.25-.29.37-.43.13-.15.17-.25.25-.42.08-.16.04-.31-.02-.43-.06-.12-.55-1.33-.76-1.82-.2-.48-.4-.41-.55-.42h-.47c-.16 0-.43.06-.66.31-.23.25-.86.85-.86 2.07s.89 2.4 1.01 2.56c.12.17 1.75 2.67 4.24 3.74.59.26 1.05.41 1.41.52.6.19 1.13.16 1.56.1.48-.07 1.46-.6 1.67-1.18.2-.58.2-1.07.14-1.18-.06-.1-.22-.16-.47-.29z"/></symbol>
   </svg>
 
-  <script src="js/main.js?v=1"></script>
+  <script is:inline src={`${base}js/main.js?v=2`}></script>
 </body>
 </html>
