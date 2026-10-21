@@ -73,7 +73,7 @@ p { margin: 0; }
   font: 400 26px/1 var(--serif); color: var(--bark);
 }
 .brand__mark i { width: 1.5px; height: 26px; background: currentColor; display: block; }
-.brand__name { font: 400 22px/1 var(--serif); color: var(--bark); }
+.brand__name { font: italic 400 22px/1 var(--serif); color: var(--bark); }
 .brand--small .brand__mark, .brand--small .brand__name { font-size: 19px; }
 .brand--small .brand__mark i { height: 19px; }
 
