@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://augstr.github.io/Tacuararte/sitemap.xml
+Sitemap: https://tacuararte.com.ar/sitemap.xml

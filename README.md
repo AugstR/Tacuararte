@@ -2,7 +2,7 @@
 
 Sitio web del taller artesanal de Carlos Roubineau (Corrientes, Argentina): restauración de muebles, esterillado, enjuncado, tapizados, carpintería y cestería en mimbre.
 
-Hecho con **[Astro](https://astro.build)** y publicado en GitHub Pages: `https://augstr.github.io/Tacuararte/`.
+Hecho con **[Astro](https://astro.build)** y publicado en GitHub Pages con dominio propio: `https://tacuararte.com.ar/`.
 
 ## Estructura
 
@@ -40,7 +40,7 @@ Requiere Node.js 22.23 o más nuevo.
 
 ```bash
 npm install
-npm run dev      # http://localhost:4321/Tacuararte/
+npm run dev      # http://localhost:4321/
 npm run build    # genera dist/
 ```
 
