@@ -44,7 +44,7 @@ const schema = {
   telephone: '+5493794637135',
   founder: { '@type': 'Person', name: 'Carlos Roubineau' },
   address: { '@type': 'PostalAddress', addressLocality: 'Corrientes', addressRegion: 'Corrientes', addressCountry: 'AR' },
-  areaServed: 'Corrientes, Argentina',
+  areaServed: { '@type': 'City', name: 'Corrientes', containedInPlace: { '@type': 'State', name: 'Corrientes' } },
   sameAs: [INSTAGRAM],
   makesOffer: [
     { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Restauración integral de muebles' } },
@@ -76,9 +76,11 @@ const formatos = ['avif', 'webp'] as const;
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="TacuarArte">
   <meta property="og:url" content={url}>
-  <meta property="og:title" content="TacuarArte: muebles restaurados y cestería en mimbre, a mano">
-  <meta property="og:description" content="Restauración de muebles, esterillado, enjuncado, tapizados y canastos de mimbre artesanales. Corrientes, Argentina.">
+  <meta property="og:title" content="TacuarArte: restauración integral de muebles en Corrientes">
+  <meta property="og:description" content="Restauración de sillas y muebles, esterillado francés y americano, enjuncado, tapicería y canastos de mimbre artesanales. Corrientes Capital.">
   <meta property="og:image" content={`${url}img/ig/sillones-jardin.jpg`}>
+  <meta property="og:image:width" content="630">
+  <meta property="og:image:height" content="640">
   <meta property="og:image:alt" content="Dos sillones de caña restaurados en un jardín">
   <meta property="og:locale" content="es_AR">
   <meta name="twitter:card" content="summary_large_image">
@@ -145,7 +147,7 @@ const formatos = ['avif', 'webp'] as const;
 
       <div class="hero__media">
         <figure class="hero__main">
-          <Picture src={sillonesJardin} formats={formatos} alt="Dos sillones de caña restaurados, apoyados sobre el pasto" loading="eager" fetchpriority="high" />
+          <Picture src={sillonesJardin} formats={formatos} widths={[400, 630]} sizes="(max-width: 700px) 90vw, 520px" alt="Dos sillones de caña restaurados, apoyados sobre el pasto" loading="eager" fetchpriority="high" />
         </figure>
         <figure class="hero__inset">
           <Picture src={canastaHero} formats={formatos} widths={[400, 800]} sizes="(max-width: 700px) 40vw, 260px" alt="Canasta de mimbre con tapa y manija" />
@@ -166,8 +168,8 @@ const formatos = ['avif', 'webp'] as const;
     <section class="section wrap" id="servicios">
       <header class="section__head">
         <p class="eyebrow">Lo que hacemos</p>
-        <h2>Oficios de taller, <em>con tiempo y a mano</em></h2>
-        <p class="section__intro">Trabajamos sobre los muebles que ya tenés. Cada trabajo se presupuesta según el mueble y lo que necesita.</p>
+        <h2>Restauración, esterillado y tapicería: <em>oficios de taller, a mano</em></h2>
+        <p class="section__intro">Trabajamos sobre los muebles que ya tenés, en Corrientes Capital: refacción y arreglo de sillas, cambio de esterilla, tapizado de sillas y sillones. Cada trabajo se presupuesta según el mueble y lo que necesita.</p>
       </header>
 
       <ul class="services">
@@ -208,7 +210,7 @@ const formatos = ['avif', 'webp'] as const;
     <section class="section section--dark" id="restauraciones">
       <div class="wrap">
         <header class="section__head">
-          <p class="eyebrow">Antes y después</p>
+          <p class="eyebrow">Antes y después · Restauración de sillas y muebles</p>
           <h2>Lo que parecía perdido, <em>vuelve a tener vida</em></h2>
         </header>
 
@@ -253,7 +255,7 @@ const formatos = ['avif', 'webp'] as const;
       <header class="section__head section__head--split">
         <div>
           <p class="eyebrow">Cestería en mimbre · 100% artesanal</p>
-          <h2>Canastas, <em>modelos varios</em></h2>
+          <h2>Canastos y canastas de mimbre, <em>modelos varios</em></h2>
           <p class="section__intro">Cada canasta se teje a mano en el taller. Trabajamos a pedido y de manera personalizada: tamaño, forma y combinación de colores a gusto.</p>
         </div>
         <a class="btn btn--ghost" href="https://drive.google.com/file/d/1vY4LDMsy3v-gLv5DBbeEwHE3gsnN9WWk/view" target="_blank" rel="noopener">Ver catálogo completo (PDF)</a>
@@ -330,13 +332,13 @@ const formatos = ['avif', 'webp'] as const;
     <section class="section wrap" id="contacto">
       <div class="contact">
         <div class="contact__text">
-          <p class="eyebrow">Contacto</p>
+          <p class="eyebrow">Contacto · Taller en Corrientes Capital</p>
           <h2>¿Tenés un mueble <em>esperando una segunda vida?</em></h2>
           <p>Escribinos y contanos qué necesitás. Atendemos consultas por WhatsApp e Instagram.</p>
           <dl class="contact__list">
             <div><dt>WhatsApp</dt><dd><a href={waLink()} target="_blank" rel="noopener">{WHATSAPP_VISIBLE}</a></dd></div>
             <div><dt>Instagram</dt><dd><a href={INSTAGRAM} target="_blank" rel="noopener">@tacuararte</a></dd></div>
-            <div><dt>Taller</dt><dd>Corrientes, Argentina</dd></div>
+            <div><dt>Taller</dt><dd>Corrientes Capital, Argentina</dd></div>
           </dl>
           <a class="btn btn--wa btn--lg" href={waLink(MENSAJES.consulta)} target="_blank" rel="noopener">
             <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-wa"/></svg>
