@@ -37,21 +37,22 @@ const schema = {
   '@type': 'LocalBusiness',
   name: 'TacuarArte',
   description:
-    'Taller artesanal: restauración de muebles, esterillado francés, enjuncado, tapizados, carpintería y cestería en mimbre a pedido.',
+    'Taller artesanal de restauración integral de muebles: carpintería, herrería, tapicería, esterillado francés y americano, enjuncado y cestería en mimbre a medida.',
   url,
   image: `${url}img/ig/sillones-jardin.jpg`,
   logo: `${url}img/ig/logo.jpg`,
-  telephone: '+54 9 3794 63-7135',
+  telephone: '+5493794637135',
   founder: { '@type': 'Person', name: 'Carlos Roubineau' },
   address: { '@type': 'PostalAddress', addressLocality: 'Corrientes', addressRegion: 'Corrientes', addressCountry: 'AR' },
   areaServed: 'Corrientes, Argentina',
   sameAs: [INSTAGRAM],
   makesOffer: [
-    { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Restauración de muebles' } },
-    { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Esterillado francés natural y sintético' } },
-    { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Enjuncado en papel kraft' } },
+    { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Restauración integral de muebles' } },
+    { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Esterillado con esterilla de ratán, estilo francés y americano' } },
+    { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Enjuncado con papel kraft, PVC y otros materiales sintéticos' } },
     { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Tapizados' } },
-    { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Carpintería' } },
+    { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Carpintería restaurativa' } },
+    { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Herrería' } },
     { '@type': 'Offer', itemOffered: { '@type': 'Product', name: 'Cestería en mimbre artesanal' } },
   ],
 };
@@ -63,8 +64,8 @@ const formatos = ['avif', 'webp'] as const;
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TacuarArte · Restauración de muebles y cestería en mimbre en Corrientes</title>
-  <meta name="description" content="Taller artesanal de Carlos Roubineau en Corrientes: restauración de muebles, esterillado francés, enjuncado, tapizados, carpintería y cestería en mimbre hecha a mano. Trabajos a pedido.">
+  <title>Restauración integral de muebles en Corrientes | TacuarArte</title>
+  <meta name="description" content="Taller de Carlos Roubineau en Corrientes: restauración de muebles, esterillado de sillas, enjuncado, tapicería, herrería y cestería en mimbre a medida.">
   <meta name="theme-color" content="#3a2416">
   <!-- Solo scripts propios; fuentes desde Google Fonts. El JSON-LD no se ejecuta, CSP no lo bloquea. -->
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; object-src 'none'; base-uri 'self'; form-action 'none'">
@@ -125,12 +126,12 @@ const formatos = ['avif', 'webp'] as const;
     <!-- ============ HERO ============ -->
     <section class="hero wrap">
       <div class="hero__text">
-        <p class="eyebrow">Taller artesanal · Corrientes, Argentina</p>
-        <h1>Muebles con historia, <em>restaurados a mano.</em></h1>
+        <p class="eyebrow">Restauración integral de muebles · Corrientes</p>
+        <h1>Muebles con historia, <em>restaurados artesanalmente a mano.</em></h1>
         <p class="hero__lead">
-          Devolvemos a la vida sillas, sillones y muebles de familia: esterillado,
-          enjuncado, tapizado y carpintería. Y tejemos canastos de mimbre a pedido,
-          uno por uno.
+          Devolvemos a la vida ese mueble de familia: sillas, sillones, mesas,
+          cristaleros y cómodas. Hacemos carpintería, herrería, tapicería, esterillado
+          y enjuncado, y trabajos en mimbre a medida y a pedido.
         </p>
         <div class="hero__ctas">
           <a class="btn btn--wa" href={waLink(MENSAJES.presupuesto)} target="_blank" rel="noopener">
@@ -166,24 +167,24 @@ const formatos = ['avif', 'webp'] as const;
       <header class="section__head">
         <p class="eyebrow">Lo que hacemos</p>
         <h2>Oficios de taller, <em>con tiempo y a mano</em></h2>
-        <p class="section__intro">Trabajamos sobre muebles que ya tenés o fabricamos a medida. Cada trabajo se presupuesta según el mueble y lo que necesita.</p>
+        <p class="section__intro">Trabajamos sobre los muebles que ya tenés. Cada trabajo se presupuesta según el mueble y lo que necesita.</p>
       </header>
 
       <ul class="services">
         <li class="service">
           <svg class="service__icon" viewBox="0 0 48 48" aria-hidden="true"><path d="M14 6v20M34 6v20M12 26h24v6H12zM14 32v10M34 32v10M14 12c6 3 14 3 20 0"/></svg>
           <h3>Restauración de muebles</h3>
-          <p>Sillas, sillones, mesas y muebles antiguos: reparación de estructura, encolado, lijado y terminación.</p>
+          <p>Sillas, sillones, mesas, cristaleros, cómodas y muebles antiguos: reparación de estructura, encolado, lijado y acabado final.</p>
         </li>
         <li class="service">
           <svg class="service__icon" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 8h32v32H8z"/><path d="M8 18h32M8 30h32M18 8v32M30 8v32M8 8l32 32M40 8 8 40"/></svg>
-          <h3>Esterillado francés</h3>
-          <p>Asientos y respaldos de esterilla tejida, en fibra <strong>natural</strong> o <strong>sintética</strong>.</p>
+          <h3>Esterillado francés y americano</h3>
+          <p>Asientos y respaldos de esterilla tejida o implantada, en material <strong>natural</strong> o <strong>sintético</strong>. Trabajamos con <strong>esterilla de ratán importada</strong>, estilo francés y americano.</p>
         </li>
         <li class="service">
           <svg class="service__icon" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 10h32v28H8z"/><path d="M8 10l16 14L40 10M8 38l16-14 16 14"/></svg>
           <h3>Enjuncado</h3>
-          <p>Asientos enjuncados en <strong>papel kraft</strong>, el tejido clásico de las sillas de campo.</p>
+          <p>Enjuncado de muebles con materiales sintéticos: <strong>papel kraft</strong>, <strong>PVC</strong> y otros.</p>
         </li>
         <li class="service">
           <svg class="service__icon" viewBox="0 0 48 48" aria-hidden="true"><path d="M10 22c0-6 6-10 14-10s14 4 14 10v6H10z"/><path d="M8 28h32v4H8zM12 32v8M36 32v8"/></svg>
@@ -192,8 +193,8 @@ const formatos = ['avif', 'webp'] as const;
         </li>
         <li class="service">
           <svg class="service__icon" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 36 28 16M24 12l8-6 10 10-6 8z"/><path d="M6 42h14"/></svg>
-          <h3>Carpintería</h3>
-          <p>Trabajos en madera a medida, reparaciones y piezas de reemplazo para muebles existentes.</p>
+          <h3>Carpintería y herrería</h3>
+          <p>Trabajos de carpintería restaurativa, herrería y otros: reparaciones y piezas de reemplazo para muebles existentes.</p>
         </li>
         <li class="service">
           <svg class="service__icon" viewBox="0 0 48 48" aria-hidden="true"><path d="M10 20h28l-3 20H13z"/><path d="M16 20c0-8 16-8 16 0M11 27h26M12 33h24"/></svg>
@@ -223,7 +224,7 @@ const formatos = ['avif', 'webp'] as const;
           </figure>
           <div class="ba__text">
             <h3>Silla de madera curvada</h3>
-            <p>Llegó sin asiento y con la madera castigada por los años. Se limpió y ajustó la estructura, y se le tejió un asiento nuevo con <strong>esterilla de ratán</strong> (esterillado estilo francés).</p>
+            <p>Llegó sin asiento y con la madera castigada por los años. Se lavó y ajustó la estructura, y se le tejió un asiento nuevo con <strong>esterilla de ratán</strong> (esterillado estilo francés).</p>
             <a class="link" href={waLink(MENSAJES.silla)} target="_blank" rel="noopener">¿Tenés una parecida? Consultanos →</a>
           </div>
         </div>
